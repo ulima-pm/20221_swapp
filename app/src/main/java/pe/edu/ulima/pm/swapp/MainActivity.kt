@@ -1,8 +1,10 @@
 package pe.edu.ulima.pm.swapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
@@ -81,8 +83,16 @@ class MainActivity : AppCompatActivity() {
         ft.replace(R.id.fcvSecciones, fragmentEspecies)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_planetas, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_planetas, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == R.id.menIrRegistro) {
+//            val intent = Intent(this, RegistroActivity::class.java)
+//            startActivity(intent)
+//        }
+//        return true
+//    }
 }

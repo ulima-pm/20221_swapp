@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import pe.edu.ulima.pm.swapp.R
 
 class EspeciesFragment : Fragment(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.title = "Especies"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
