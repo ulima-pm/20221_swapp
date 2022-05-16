@@ -5,8 +5,14 @@
       <map>
         <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/activity_registro.xml" value="0.2651975683890577" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_especies.xml" value="0.22685185185185186" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_naves_espaciales.xml" value="0.22685185185185186" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_peliculas.xml" value="0.22685185185185186" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_personas.xml" value="0.22685185185185186" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_planetas.xml" value="0.22685185185185186" />
         <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_registro1.xml" value="0.2651975683890577" />
         <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_registro2.xml" value="0.2651975683890577" />
+        <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/layout/fragment_vehiculos.xml" value="0.22685185185185186" />
         <entry key="..\:/ULIMA/2022_1/PM/SWApp/app/src/main/res/menu/menu_navigation.xml" value="0.2851851851851852" />
       </map>
     </option>

@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             it.setChecked(true)
 
             when(it.itemId) {
-                R.id.menEspecies -> MostrarFragmentEspecies()
+                R.id.menEspecies -> mostrarFragmentEspecies()
                 R.id.menNavesEspaciales -> mostrarFragmentNavesEspaciales()
                 R.id.menPeliculas -> mostrarFragmentPeliculas()
                 R.id.menPersonas -> mostrarFragmentPersonas()
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         TODO("Not yet implemented")
     }
 
-    private fun MostrarFragmentEspecies() {
+    private fun mostrarFragmentEspecies() {
         TODO("Not yet implemented")
     }
 }
