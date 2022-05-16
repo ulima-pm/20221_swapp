@@ -11,6 +11,7 @@ class EspeciesFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.title = "Especies"
+        setHasOptionsMenu(true)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
