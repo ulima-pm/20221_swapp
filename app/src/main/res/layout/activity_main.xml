@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
             android:elevation="4dp"
-            android:background="@color/material_dynamic_neutral60"
+            android:background="#AA99FF"
             />
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcvSecciones"

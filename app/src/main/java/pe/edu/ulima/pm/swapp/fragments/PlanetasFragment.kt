@@ -1,6 +1,7 @@
 package pe.edu.ulima.pm.swapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,9 @@ class PlanetasFragment : Fragment() {
         mRviPlanetas = view.findViewById(R.id.rviPlanetas)
 
         val listaPlanetas : List<Planeta> = GestorPlanetas().obtenerListaPlanetas()
-        val adapter = ListadoPlanetasAdapter(listaPlanetas)
+        val adapter = ListadoPlanetasAdapter(listaPlanetas) {
+            Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
+        }
         mRviPlanetas.adapter = adapter
 
     }

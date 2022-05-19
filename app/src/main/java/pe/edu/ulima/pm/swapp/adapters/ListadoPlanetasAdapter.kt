@@ -9,13 +9,18 @@ import pe.edu.ulima.pm.swapp.R
 import pe.edu.ulima.pm.swapp.models.beans.Planeta
 
 
-class ListadoPlanetasAdapter(private val mListaPlanetas : List<Planeta>)
+class ListadoPlanetasAdapter(private val mListaPlanetas : List<Planeta>,
+    private val mOnItemClickListener : (planeta : Planeta) -> Unit)
     : RecyclerView.Adapter<ListadoPlanetasAdapter.ViewHolder>(){
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         val tviPlanetaNombre : TextView
+        val tviPlanetaTerreno : TextView
+        val tviPlanetaPoblacion : TextView
 
         init {
             tviPlanetaNombre = view.findViewById(R.id.tviPlanetaNombre)
+            tviPlanetaTerreno = view.findViewById(R.id.tviPlanetaTerreno)
+            tviPlanetaPoblacion = view.findViewById(R.id.tviPlanetaPoblacion)
         }
     }
 
@@ -29,6 +34,12 @@ class ListadoPlanetasAdapter(private val mListaPlanetas : List<Planeta>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val planeta = mListaPlanetas[position]
         holder.tviPlanetaNombre.text = planeta.nombre
+        holder.tviPlanetaTerreno.text = planeta.terreno
+        holder.tviPlanetaPoblacion.text = "" + planeta.poblacion
+
+        holder.itemView.setOnClickListener {
+            mOnItemClickListener(planeta)
+        }
     }
 
     override fun getItemCount(): Int {
