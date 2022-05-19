@@ -16,6 +16,7 @@ import pe.edu.ulima.pm.swapp.fragments.PlanetasFragment
 class MainActivity : AppCompatActivity() {
     private lateinit var mDlaMain : DrawerLayout
     private lateinit var mNviMain : NavigationView
+    private lateinit var mToolbar: Toolbar
 
     private val fragmentEspecies = EspeciesFragment()
     private val fragmentNavesEspaciales = NavesEspacialesFragment()
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         mDlaMain = findViewById(R.id.dlaMain)
         mNviMain = findViewById(R.id.nviMain)
+        mToolbar = findViewById(R.id.toolbar)
+
+        //setSupportActionBar(mToolbar)
 
         mNviMain.setNavigationItemSelectedListener {
             it.setChecked(true)
