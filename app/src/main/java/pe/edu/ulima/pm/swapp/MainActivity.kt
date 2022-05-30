@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         // Configurando toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        //ejecutarThread()
     }
 
     private fun mostrarFragmentVehiculos(ft : FragmentTransaction) {
@@ -99,4 +101,57 @@ class MainActivity : AppCompatActivity() {
 //        }
 //        return true
 //    }
+
+    fun ejecutarThread() {
+        val thread : Thread = Thread {
+            Thread.sleep(2000L)
+            mToolbar.title = "Titulo 2"
+            println("Prueba de hilo")
+        }
+        thread.start()
+        mToolbar.title = "Titulo 0"
+        println(mToolbar.title)
+        println("Fuera del hilo")
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import pe.edu.ulima.pm.swapp.R
 import pe.edu.ulima.pm.swapp.adapters.ListadoPlanetasAdapter
 import pe.edu.ulima.pm.swapp.models.GestorPlanetas
@@ -34,11 +35,25 @@ class PlanetasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mRviPlanetas = view.findViewById(R.id.rviPlanetas)
 
-        val listaPlanetas : List<Planeta> = GestorPlanetas().obtenerListaPlanetas()
-        val adapter = ListadoPlanetasAdapter(listaPlanetas) {
-            Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
+        //val listaPlanetas : List<Planeta> = GestorPlanetas().obtenerListaPlanetas()
+        /*GestorPlanetas().obtenerListaPlanetas {
+            val adapter = ListadoPlanetasAdapter(it) {
+                Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
+            }
+            mRviPlanetas.adapter = adapter
+        }*/
+        val gestor = GestorPlanetas()
+        GlobalScope.launch {
+
+            val lista = gestor.obtenerListaPlanetasCorutinas()
+
+            withContext(Dispatchers.Main) {
+                val adapter = ListadoPlanetasAdapter(lista) {
+                    Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
+                }
+                mRviPlanetas.adapter = adapter
+            }
         }
-        mRviPlanetas.adapter = adapter
 
     }
 }
