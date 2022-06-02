@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         // Configurando toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         //ejecutarThread()
     }
 

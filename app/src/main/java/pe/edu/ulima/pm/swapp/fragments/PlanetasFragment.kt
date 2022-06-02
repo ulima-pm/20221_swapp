@@ -43,8 +43,9 @@ class PlanetasFragment : Fragment() {
             mRviPlanetas.adapter = adapter
         }*/
         val gestor = GestorPlanetas()
-        GlobalScope.launch {
-
+        GlobalScope.launch(Dispatchers.IO) {
+            // Defecto : Default -> Tareas de alto costo computacional
+            // IO : -> Tareas que no tinen costo alto pero tienen paradas
             val lista = gestor.obtenerListaPlanetasCorutinas()
 
             withContext(Dispatchers.Main) {
