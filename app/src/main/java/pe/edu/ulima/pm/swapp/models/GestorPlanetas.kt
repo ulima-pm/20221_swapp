@@ -1,6 +1,7 @@
 package pe.edu.ulima.pm.swapp.models
 
 import android.os.Handler
+import android.util.Log
 import kotlinx.coroutines.*
 import pe.edu.ulima.pm.swapp.models.beans.Planeta
 import pe.edu.ulima.pm.swapp.networking.NetworkingManager
@@ -32,17 +33,39 @@ class GestorPlanetas {
     fun obtenerListaPlanetasCorutinas() : List<Planeta> {
         // Conexion Remota
         val networkingManager = NetworkingManager.getInstance()
-        val response = networkingManager.service.obtenerPlanetas().execute()
 
-        val planetsResponse = response.body()!!
+        val resultado = mutableListOf<Planeta>()
 
-        val resultado = planetsResponse.results.map {
+        var cont : Int = 1
+        while (true){
+            val response = networkingManager.service.obtenerPlanetas(cont.toString()).execute()
+
+            val planetsResponse = response.body()!!
+
+            // llenar un arreglo de planetas
+            planetsResponse.results.forEach {
+                val planeta = Planeta(
+                    it.name,
+                    it.terrain,
+                    it.population
+                )
+                resultado.add(planeta)
+            }
+
+            if (planetsResponse.next == null) break
+
+            cont++
+        }
+
+
+
+        /*val resultado = planetsResponse.results.map {
             Planeta(
                 it.name,
                 it.terrain,
                 it.population
             )
-        }
+        }*/
         return resultado
     }
 
