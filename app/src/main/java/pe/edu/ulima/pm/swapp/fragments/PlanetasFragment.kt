@@ -43,7 +43,8 @@ class PlanetasFragment : Fragment() {
             mRviPlanetas.adapter = adapter
         }*/
         val gestor = GestorPlanetas()
-        GlobalScope.launch(Dispatchers.IO) {
+
+        /*GlobalScope.launch(Dispatchers.IO) {
             // Defecto : Default -> Tareas de alto costo computacional
             // IO : -> Tareas que no tinen costo alto pero tienen paradas
             val lista = gestor.obtenerListaPlanetasCorutinas()
@@ -54,6 +55,17 @@ class PlanetasFragment : Fragment() {
                 }
                 mRviPlanetas.adapter = adapter
             }
+        }*/
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val lista = withContext(Dispatchers.IO) {
+                 gestor.obtenerListaPlanetasCorutinas()
+            }
+
+            val adapter = ListadoPlanetasAdapter(lista) {
+                Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
+            }
+            mRviPlanetas.adapter = adapter
         }
 
     }
