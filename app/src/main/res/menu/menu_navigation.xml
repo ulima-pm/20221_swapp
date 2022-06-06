@@ -7,5 +7,6 @@
         <item android:id="@+id/menPersonas" android:title="Personas"/>
         <item android:id="@+id/menPeliculas" android:title="Películas"/>
         <item android:id="@+id/menEspecies" android:title="Especies"/>
+        <item android:id="@+id/menCerrarSesion" android:title="Cerrar Sesion"/>
     </group>
 </menu>

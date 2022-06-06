@@ -1,5 +1,6 @@
 package pe.edu.ulima.pm.swapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menPersonas -> mostrarFragmentPersonas(ft)
                 R.id.menPlanetas -> mostrarFragmentPlanetas(ft)
                 R.id.menVehiculos -> mostrarFragmentVehiculos(ft)
+                R.id.menCerrarSesion -> cerrarSesion()
             }
             ft.addToBackStack(null)
 
@@ -62,6 +64,13 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         //ejecutarThread()
+    }
+
+    private fun cerrarSesion() {
+        val editor = getSharedPreferences(Constantes.NOMBRE_SP, Context.MODE_PRIVATE).edit()
+        editor.putString(Constantes.SP_USERNAME, null)
+        editor.commit()
+        finish()
     }
 
     private fun mostrarFragmentVehiculos(ft : FragmentTransaction) {
