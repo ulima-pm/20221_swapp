@@ -90,7 +90,7 @@ class GestorPlanetas {
 
         planetas.forEach {
             daoPlaneta.insert(
-                PlanetaRoom(it.nombre, it.terreno, it.poblacion)
+                PlanetaRoom(0, it.nombre, it.terreno, it.poblacion)
             )
         }
     }

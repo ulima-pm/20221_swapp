@@ -1,11 +1,13 @@
 package pe.edu.ulima.pm.swapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
+import pe.edu.ulima.pm.swapp.Constantes
 import pe.edu.ulima.pm.swapp.R
 import pe.edu.ulima.pm.swapp.adapters.ListadoPlanetasAdapter
 import pe.edu.ulima.pm.swapp.models.GestorPlanetas
@@ -57,16 +59,32 @@ class PlanetasFragment : Fragment() {
             }
         }*/
 
+        val sp = requireActivity().getSharedPreferences(
+            Constantes.NOMBRE_SP, Context.MODE_PRIVATE)
+
         GlobalScope.launch(Dispatchers.Main) {
-            val lista = withContext(Dispatchers.IO) {
-                 gestor.obtenerListaPlanetasCorutinas()
+            val estaSincronizado = sp.getBoolean(Constantes.SP_ESTA_SINCRONIZADO,
+                false)
+            var lista : List<Planeta> = mutableListOf()
+            if (!estaSincronizado) {
+                // Obtenemos la data del servicio externo
+                lista = withContext(Dispatchers.IO) {
+                    gestor.obtenerListaPlanetasCorutinas()
+                }
+
+                // Guardamos los planetas obtenidos en el servicio en Room
+                gestor.guardarListaPlanetasRoom(
+                    requireActivity().applicationContext,
+                    lista
+                )
+                sp.edit().putBoolean(
+                    Constantes.SP_ESTA_SINCRONIZADO, true).commit()
+            } else {
+                // Obtenemos la data de Room (base de datos interna)
+                lista = gestor.obtenerListaPlanetasRoom(
+                    requireContext().applicationContext)
             }
 
-            // Guardamos los planetas obtenidos en el servicio en Room
-            gestor.guardarListaPlanetasRoom(
-                requireActivity().applicationContext,
-                lista
-            )
 
             val adapter = ListadoPlanetasAdapter(lista) {
                 Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
