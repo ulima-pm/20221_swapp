@@ -1,10 +1,14 @@
 package pe.edu.ulima.pm.swapp.models
 
+import android.content.Context
 import android.os.Handler
 import android.util.Log
 import kotlinx.coroutines.*
 import pe.edu.ulima.pm.swapp.models.beans.Planeta
 import pe.edu.ulima.pm.swapp.networking.NetworkingManager
+import pe.edu.ulima.pm.swapp.room.AppDatabase
+import pe.edu.ulima.pm.swapp.room.dao.PlanetaRoomDAO
+import pe.edu.ulima.pm.swapp.room.models.PlanetaRoom
 
 class GestorPlanetas {
     val handler : Handler = Handler()
@@ -67,6 +71,28 @@ class GestorPlanetas {
             )
         }*/
         return resultado
+    }
+
+    fun obtenerListaPlanetasRoom(context : Context) : List<Planeta> {
+        val daoPlaneta : PlanetaRoomDAO = AppDatabase.getInstance(
+            context).getPlanetaRoomDAO()
+
+        val listaPlanetasRoom = daoPlaneta.getAll() // consulta Room
+        val listaPlanetas = listaPlanetasRoom.map {
+            Planeta(it.nombre, it.terreno, it.poblacion)
+        }
+        return listaPlanetas
+    }
+
+    fun guardarListaPlanetasRoom(context : Context, planetas : List<Planeta>) {
+        val daoPlaneta : PlanetaRoomDAO = AppDatabase.getInstance(
+            context).getPlanetaRoomDAO()
+
+        planetas.forEach {
+            daoPlaneta.insert(
+                PlanetaRoom(it.nombre, it.terreno, it.poblacion)
+            )
+        }
     }
 
 

@@ -62,6 +62,12 @@ class PlanetasFragment : Fragment() {
                  gestor.obtenerListaPlanetasCorutinas()
             }
 
+            // Guardamos los planetas obtenidos en el servicio en Room
+            gestor.guardarListaPlanetasRoom(
+                requireActivity().applicationContext,
+                lista
+            )
+
             val adapter = ListadoPlanetasAdapter(lista) {
                 Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
             }
