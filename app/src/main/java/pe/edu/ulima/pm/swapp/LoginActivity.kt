@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.widget.Button
 import android.widget.EditText
+import pe.edu.ulima.pm.swapp.models.GestorUsuarios
 import java.io.*
 import java.nio.charset.Charset
 
@@ -28,13 +29,17 @@ class LoginActivity : AppCompatActivity() {
 
             val butLogin = findViewById<Button>(R.id.butLogin)
             butLogin.setOnClickListener {
+                // 0: Llamar al login firebase
+                GestorUsuarios.getInstance().login(
+                    eteUsername.text.toString(),
+                    etePassword.text.toString())
                 // 1. Guardar el usuario en el Shared Preference / AI
                 //guardarUsernameSP()
-                guardarUsernameAI()
+                //guardarUsernameAI()
 
                 // 2. Luego pasar al MainActivity
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                //startActivity(Intent(this, MainActivity::class.java))
+                //finish()
             }
         }
     }
