@@ -3,6 +3,9 @@ package pe.edu.ulima.pm.swapp.models
 import android.content.Context
 import android.os.Handler
 import android.util.Log
+import com.google.firebase.firestore.WriteBatch
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import pe.edu.ulima.pm.swapp.models.beans.Planeta
 import pe.edu.ulima.pm.swapp.networking.NetworkingManager
@@ -11,6 +14,8 @@ import pe.edu.ulima.pm.swapp.room.dao.PlanetaRoomDAO
 import pe.edu.ulima.pm.swapp.room.models.PlanetaRoom
 
 class GestorPlanetas {
+    val dbFirebase = Firebase.firestore
+
     val handler : Handler = Handler()
 
     fun obtenerListaPlanetas(callback : (List<Planeta>)->Unit) : Unit {
@@ -102,6 +107,23 @@ class GestorPlanetas {
     fun guardarListaPlanetasFirebase(planetas : List<Planeta>,
                                      success : ()->Unit,
                                      error: (String)->Unit ) {
+        val planetasCol = dbFirebase.collection("planetas")
+
+        dbFirebase.runTransaction{ transaction ->
+            planetas.forEach {
+                val mapPlaneta = hashMapOf(
+                    "nombre" to it.nombre,
+                    "terreno" to it.terreno,
+                    "poblacion" to it.poblacion
+                )
+                transaction.set(planetasCol.document(), mapPlaneta)
+            }
+        }.addOnSuccessListener {
+            success()
+        }.addOnFailureListener{
+            error(it.message.toString())
+        }
+
 
 
     }
