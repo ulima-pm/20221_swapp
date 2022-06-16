@@ -3,6 +3,7 @@ package pe.edu.ulima.pm.swapp.models
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import pe.edu.ulima.pm.swapp.models.beans.Usuario
 
 class GestorUsuarios {
     val dbFirebase = Firebase.firestore
@@ -18,7 +19,7 @@ class GestorUsuarios {
         }
     }
 
-    fun login(username : String, password : String) {
+    fun login(username : String, password : String, callback : (Usuario?) -> Unit) {
         val usuariosCol =  dbFirebase.collection("usuarios")
 
         usuariosCol.whereEqualTo("username", username)
@@ -26,10 +27,14 @@ class GestorUsuarios {
             .get()
             .addOnSuccessListener {
                 if (it!!.documents.size > 0) {
-                    Log.i("GestorUsuarios",
-                        it!!.documents[0]!!["nombre"].toString())
+                    val usuario = Usuario(
+                        it.documents[0].id,
+                        it.documents[0]["username"].toString(),
+                        it.documents[0]["nombre"].toString()
+                    )
+                    callback(usuario)
                 }else {
-                    Log.i("GestorUsuarios", "Error en login")
+                    callback(null)
                 }
 
             }

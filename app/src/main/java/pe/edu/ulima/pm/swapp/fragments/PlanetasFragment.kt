@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
@@ -73,24 +74,36 @@ class PlanetasFragment : Fragment() {
                 }
 
                 // Guardamos los planetas obtenidos en el servicio en Room
+                Log.d("PlanetasFragment", lista.size.toString())
                 gestor.guardarListaPlanetasRoom(
                     requireActivity().applicationContext,
                     lista
                 )
-                sp.edit().putBoolean(
-                    Constantes.SP_ESTA_SINCRONIZADO, true).commit()
+
+                gestor.guardarListaPlanetasFirebase(lista, {
+                    // Caso exito
+                    sp.edit().putBoolean(
+                        Constantes.SP_ESTA_SINCRONIZADO, true).commit()
+                    cargarListaPlanetas(lista)
+                }){
+                    // Caso error guardado Firebase
+                    Toast.makeText(requireActivity(),
+                        "Error: ${it}", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 // Obtenemos la data de Room (base de datos interna)
+                Log.d("PlanetasFragment", "Room")
                 lista = gestor.obtenerListaPlanetasRoom(
                     requireContext().applicationContext)
+                cargarListaPlanetas(lista)
             }
-
-
-            val adapter = ListadoPlanetasAdapter(lista) {
-                Log.i("PlanetasFragment","Se hizo click en el planeta " + it.nombre);
-            }
-            mRviPlanetas.adapter = adapter
         }
+    }
 
+    private fun cargarListaPlanetas(lista: List<Planeta>) {
+        val adapter = ListadoPlanetasAdapter(lista) {
+            Log.i("PlanetasFragment", "Se hizo click en el planeta " + it.nombre);
+        }
+        mRviPlanetas.adapter = adapter
     }
 }

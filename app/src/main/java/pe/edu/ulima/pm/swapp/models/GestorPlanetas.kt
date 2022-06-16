@@ -78,6 +78,7 @@ class GestorPlanetas {
             context).getPlanetaRoomDAO()
 
         val listaPlanetasRoom = daoPlaneta.getAll() // consulta Room
+        println(listaPlanetasRoom.size)
         val listaPlanetas = listaPlanetasRoom.map {
             Planeta(it.nombre, it.terreno, it.poblacion)
         }
@@ -85,15 +86,23 @@ class GestorPlanetas {
     }
 
     fun guardarListaPlanetasRoom(context : Context, planetas : List<Planeta>) {
-        val daoPlaneta : PlanetaRoomDAO = AppDatabase.getInstance(
-            context).getPlanetaRoomDAO()
+
+        val db = AppDatabase.getInstance(
+            context)
+        val daoPlaneta : PlanetaRoomDAO = db.getPlanetaRoomDAO()
 
         planetas.forEach {
             daoPlaneta.insert(
                 PlanetaRoom(0, it.nombre, it.terreno, it.poblacion)
             )
         }
+
     }
 
+    fun guardarListaPlanetasFirebase(planetas : List<Planeta>,
+                                     success : ()->Unit,
+                                     error: (String)->Unit ) {
 
+
+    }
 }
