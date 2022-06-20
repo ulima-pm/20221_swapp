@@ -6,16 +6,21 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater.from
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import pe.edu.ulima.pm.swapp.models.GestorUsuarios
 import java.io.*
 import java.nio.charset.Charset
@@ -23,10 +28,13 @@ import java.nio.charset.Charset
 class LoginActivity : AppCompatActivity() {
     private lateinit var eteUsername : EditText
     private lateinit var etePassword : EditText
+    private lateinit var mFusedLocationClient : FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mFusedLocationClient = LocationServices
+            .getFusedLocationProviderClient(this)
         crearCanalNotificacion()
 
         if (verificarLoginAI()) {
@@ -184,4 +192,37 @@ class LoginActivity : AppCompatActivity() {
 
         return notification
     }
+
+    private fun obtenerUltimaLocalizacion() {
+        val permisoLoc = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+        if (permisoLoc != PackageManager.PERMISSION_GRANTED) {
+
+        }else {
+            // Ya tengo los permisos, tengo que pedir la
+            // ultima localizacion
+            mFusedLocationClient.lastLocation.addOnSuccessListener {
+                Log.i(
+                    "LoginActivity",
+                    "Latitud:${it.latitude} Longitud:${it.longitude}")
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
