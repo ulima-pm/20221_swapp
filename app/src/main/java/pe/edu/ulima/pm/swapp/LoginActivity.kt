@@ -3,6 +3,7 @@ package pe.edu.ulima.pm.swapp
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -45,7 +46,8 @@ class LoginActivity : AppCompatActivity() {
                     etePassword.text.toString()) {
                         if (it == null) {
                             // Error en login
-                            val notif = crearNotificacion("Login SWApp", "Error en login")
+                            val notif = crearNotificacion("Login SWApp",
+                                "Error en login. Click para registrarse")
                             NotificationManagerCompat.from(this).notify(
                                 1,
                                 notif
@@ -160,12 +162,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun crearNotificacion(title : String, content : String) : Notification {
+        val intent = Intent(this, RegistroActivity::class.java).apply {
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(
             this,
             Constantes.NotificationData.NOTIFICATION_CHANNEL_ID
         ).setContentTitle(title)
             .setContentText(content)
             .setSmallIcon(androidx.core.R.drawable.notification_icon_background)
+            .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
 
         return notification
