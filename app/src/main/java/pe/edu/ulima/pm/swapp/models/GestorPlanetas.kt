@@ -90,6 +90,25 @@ class GestorPlanetas {
         return listaPlanetas
     }
 
+    fun obtenerListaPlanetasFirebase(success : (List<Planeta>)->Unit, error : (String)->Unit) {
+        val planetasCol = dbFirebase.collection("planetas")
+        
+        planetasCol.get()
+            .addOnSuccessListener { 
+                val listaPlanetas = it.documents.map { documentSnapshot ->
+                    Planeta(
+                        documentSnapshot["nombre"].toString(),
+                        documentSnapshot["poblacion"].toString(),
+                        documentSnapshot["terreno"].toString()
+                    )
+                }
+                success(listaPlanetas)
+            }.addOnFailureListener { 
+                error(it.message.toString())
+            }
+        
+    }
+
     fun guardarListaPlanetasRoom(context : Context, planetas : List<Planeta>) {
 
         val db = AppDatabase.getInstance(

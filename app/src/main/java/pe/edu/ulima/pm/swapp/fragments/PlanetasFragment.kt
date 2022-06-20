@@ -92,10 +92,17 @@ class PlanetasFragment : Fragment() {
                 }
             } else {
                 // Obtenemos la data de Room (base de datos interna)
-                Log.d("PlanetasFragment", "Room")
-                lista = gestor.obtenerListaPlanetasRoom(
+                /*lista = gestor.obtenerListaPlanetasRoom(
                     requireContext().applicationContext)
-                cargarListaPlanetas(lista)
+                */
+                // Obtenemos la data de Firebase
+                gestor.obtenerListaPlanetasFirebase({
+                    cargarListaPlanetas(it)
+                }){
+                    Toast.makeText(requireActivity(),
+                        "Error: ${it}", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
     }
