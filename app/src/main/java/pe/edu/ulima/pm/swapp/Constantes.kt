@@ -8,4 +8,12 @@ class Constantes {
         val NOMBRE_AI = "data.txt"
         val NOMBRE_AE = "data_ae.txt"
     }
+
+    class NotificationData {
+        companion object {
+            val NOTIFICATION_CHANNEL_ID = "1"
+            val NOTIFICATION_CHANNEL_NAME = "LOGIN"
+            val NOTIFICATION_CHANNEL_DESCRIPTION = "Notification channel for login purposes"
+        }
+    }
 }
