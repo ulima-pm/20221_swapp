@@ -16,6 +16,7 @@ import android.view.LayoutInflater.from
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -28,7 +29,9 @@ import java.nio.charset.Charset
 class LoginActivity : AppCompatActivity() {
     private lateinit var eteUsername : EditText
     private lateinit var etePassword : EditText
+    private lateinit var butLocalizacion : Button
     private lateinit var mFusedLocationClient : FusedLocationProviderClient
+    private var mObteniendoLocalizaciones : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +75,17 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
             }
+            butLocalizacion = findViewById(R.id.butLocalizacion)
+            butLocalizacion.setOnClickListener {
+                mObteniendoLocalizaciones = !mObteniendoLocalizaciones
+                if (!mObteniendoLocalizaciones) {
+                    butLocalizacion.setText("INICIAR LOCALIZACION")
+                }else {
+                    (it as Button).setText("PARAR LOCALIZACION")
+                }
+            }
         }
+        obtenerUltimaLocalizacion()
     }
 
     private fun guardarUsernameSP() {
@@ -200,6 +213,22 @@ class LoginActivity : AppCompatActivity() {
         )
 
         if (permisoLoc != PackageManager.PERMISSION_GRANTED) {
+            val puedePedirPermisoLoc = ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+
+            if (puedePedirPermisoLoc){
+                Toast.makeText(
+                    this, "Debe habilitar sus permisos", Toast.LENGTH_LONG).show()
+            }else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    100
+                )
+                obtenerUltimaLocalizacion()
+            }
 
         }else {
             // Ya tengo los permisos, tengo que pedir la
