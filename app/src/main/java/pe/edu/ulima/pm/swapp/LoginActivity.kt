@@ -1,5 +1,6 @@
 package pe.edu.ulima.pm.swapp
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -20,8 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import pe.edu.ulima.pm.swapp.models.GestorUsuarios
 import java.io.*
 import java.nio.charset.Charset
@@ -32,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var butLocalizacion : Button
     private lateinit var mFusedLocationClient : FusedLocationProviderClient
     private var mObteniendoLocalizaciones : Boolean = false
+    private var mLocationRequest : LocationRequest? = null // Lazy init
+    private lateinit var mLocationCallback: LocationCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,16 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }else {
             setContentView(R.layout.activity_login)
+
+            mLocationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    val location  = locationResult.lastLocation
+
+                    Log.i("LoginActivity",
+                        "Latitud:${location?.latitude} Longitud:${location?.longitude}")
+                }
+            }
 
             eteUsername = findViewById(R.id.eteUsername)
             etePassword = findViewById(R.id.etePassword)
@@ -80,8 +92,10 @@ class LoginActivity : AppCompatActivity() {
                 mObteniendoLocalizaciones = !mObteniendoLocalizaciones
                 if (!mObteniendoLocalizaciones) {
                     butLocalizacion.setText("INICIAR LOCALIZACION")
+                    pararLocalizacionActual()
                 }else {
                     (it as Button).setText("PARAR LOCALIZACION")
+                    obtenerLocalizacionActual()
                 }
             }
         }
@@ -239,6 +253,31 @@ class LoginActivity : AppCompatActivity() {
                     "Latitud:${it.latitude} Longitud:${it.longitude}")
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun obtenerLocalizacionActual() {
+        if (mLocationRequest == null) {
+            mLocationRequest = createLocationRequest()
+        } // lazy init
+        mFusedLocationClient.requestLocationUpdates(
+            mLocationRequest!!,
+            mLocationCallback,
+            null
+        )
+    }
+
+    private fun pararLocalizacionActual() {
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback)
+    }
+
+    private fun createLocationRequest() : LocationRequest {
+        val locationRequest = LocationRequest.create()
+        locationRequest.interval = 4000;
+        locationRequest.fastestInterval = 2000;
+        locationRequest.priority = Priority.PRIORITY_BALANCED_POWER_ACCURACY
+
+        return locationRequest
     }
 }
 
