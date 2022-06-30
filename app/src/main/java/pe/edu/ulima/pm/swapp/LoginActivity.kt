@@ -234,7 +234,9 @@ class LoginActivity : AppCompatActivity() {
 
             if (puedePedirPermisoLoc){
                 Toast.makeText(
-                    this, "Debe habilitar sus permisos", Toast.LENGTH_LONG).show()
+                    this, "Debe habilitar sus permisos por la configuración",
+                    Toast.LENGTH_LONG).show()
+                finish()
             }else {
                 ActivityCompat.requestPermissions(
                     this,
@@ -278,6 +280,22 @@ class LoginActivity : AppCompatActivity() {
         locationRequest.priority = Priority.PRIORITY_BALANCED_POWER_ACCURACY
 
         return locationRequest
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (mObteniendoLocalizaciones) {
+            Log.i("LoginActivity", "Iniciando localizacion")
+            obtenerLocalizacionActual()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mObteniendoLocalizaciones) {
+            Log.i("LoginActivity", "Parando localizacion")
+            pararLocalizacionActual()
+        }
     }
 }
 
