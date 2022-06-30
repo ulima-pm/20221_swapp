@@ -1,6 +1,7 @@
 package pe.edu.ulima.pm.swapp.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import pe.edu.ulima.pm.swapp.Constantes
+import pe.edu.ulima.pm.swapp.FotoActivity
 import pe.edu.ulima.pm.swapp.R
 import pe.edu.ulima.pm.swapp.adapters.ListadoPlanetasAdapter
 import pe.edu.ulima.pm.swapp.models.GestorPlanetas
@@ -32,6 +34,15 @@ class PlanetasFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_planetas, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menIrRegistro) {
+            // Ir al nuevo FotoActivity
+            val intent = Intent(requireActivity(), FotoActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
