@@ -19,7 +19,8 @@
         android:theme="@style/Theme.SWApp">
         <activity
             android:name=".FotoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">

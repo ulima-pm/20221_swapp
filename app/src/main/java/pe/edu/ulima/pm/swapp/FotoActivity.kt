@@ -3,6 +3,8 @@ package pe.edu.ulima.pm.swapp
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -52,9 +54,53 @@ class FotoActivity : AppCompatActivity() {
             /*val bitmap : Bitmap = data!!.extras!!.get("data") as Bitmap
             iviFoto.setImageBitmap(bitmap)*/
 
-            val bitmap : Bitmap = BitmapFactory.decodeFile(mFotoPath!!)
-            iviFoto.setImageBitmap(bitmap)
+            mostrarFoto()
+
         }
+    }
+
+    private fun mostrarFoto() {
+        val matrix = Matrix()
+        val angulo = obtenerAnguloRotacion()
+        matrix.postRotate(angulo)
+
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(mFotoPath!!, options)
+
+        // Calculo de espacio disponible
+        val iviHeight = iviFoto.height
+        val iviWidth = iviFoto.width
+
+        // Calcular el factor de escalamiento
+        var scaleFactor = 1
+        if (angulo == 90f || angulo == 270f){
+            scaleFactor = Math.min(
+                iviWidth / options.outHeight,
+                iviHeight / options.outWidth
+            )
+        }else {
+            scaleFactor = Math.min(
+                iviWidth / options.outWidth,
+                iviHeight / options.outHeight
+            )
+        }
+
+
+        options.inJustDecodeBounds = false
+        options.inSampleSize = scaleFactor
+
+        val bitmap : Bitmap = BitmapFactory.decodeFile(mFotoPath!!, options)
+        val bitmapRotated = Bitmap.createBitmap(
+            bitmap,
+            0,
+            0,
+            bitmap.width,
+            bitmap.height,
+            matrix,
+            true
+        )
+        iviFoto.setImageBitmap(bitmapRotated)
     }
 
     private fun crearArchivoImagen() : File? {
@@ -70,5 +116,23 @@ class FotoActivity : AppCompatActivity() {
         )
         mFotoPath = imageFile.absolutePath
         return imageFile
+    }
+
+    private fun obtenerAnguloRotacion() : Float {
+        val exifInterface = ExifInterface(mFotoPath!!)
+        val orientation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
+
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90f
+        }else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180f
+        }else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270f
+        }else {
+            return 0f
+        }
     }
 }
